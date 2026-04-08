@@ -1,0 +1,7 @@
+name: summarize-context
+description: Read all context files and write a combined summary
+trigger: on-push
+steps:
+  - name: summarize
+    type: claude-code
+    prompt: "Read all markdown files in the context/ folder and write a concise summary of all of them combined into summaries/latest.md. Include a section for each file with its key points."

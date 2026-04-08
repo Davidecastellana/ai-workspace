@@ -1,0 +1,30 @@
+name: Execute Pipelines
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "context/**"
+      - "pipelines/**"
+
+jobs:
+  execute:
+    runs-on: self-hosted  # your Mac — claude CLI is already authenticated here
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run pipeline
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          python3 tools/execute_pipeline.py pipelines/summarize-context.yaml
+
+      - name: Commit results
+        run: |
+          git config user.email "pipeline@local"
+          git config user.name "Pipeline Bot"
+          git add summaries/
+          git diff --staged --quiet || (git commit -m "pipeline: update summaries [skip ci]" && git push)
