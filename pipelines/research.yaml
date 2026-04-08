@@ -1,0 +1,7 @@
+name: research-room
+description: Process research room content — synthesize findings
+trigger: on-push
+steps:
+  - name: process-research
+    type: claude-code
+    prompt: "Read CLAUDE.md for context, then read all files in context/research/. Synthesize the research findings and write a summary to summaries/research-summary.md."

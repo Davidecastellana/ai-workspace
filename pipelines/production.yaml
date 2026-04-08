@@ -1,0 +1,7 @@
+name: production-room
+description: Process production room content — validate specs, check completeness
+trigger: on-push
+steps:
+  - name: process-production
+    type: claude-code
+    prompt: "Read CLAUDE.md for context, then read all files in context/production/. Summarize the production specs and write a status report to summaries/production-status.md."

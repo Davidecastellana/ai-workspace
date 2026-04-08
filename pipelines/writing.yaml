@@ -1,0 +1,7 @@
+name: writing-room
+description: Process writing room content — summarize drafts, suggest improvements
+trigger: on-push
+steps:
+  - name: process-writing
+    type: claude-code
+    prompt: "Read CLAUDE.md for context, then read all files in context/writing/. Summarize the current state of all drafts and write a brief status report to summaries/writing-status.md."
