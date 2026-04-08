@@ -9,7 +9,7 @@ on:
 
 jobs:
   execute:
-    runs-on: self-hosted  # your Mac — claude CLI is already authenticated here
+    runs-on: self-hosted  # works on any OS — macOS dev or Linux prod
 
     steps:
       - name: Checkout
@@ -17,9 +17,13 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Install Python dependencies
+        run: pip3 install -r requirements.txt --quiet
+
       - name: Run pipeline
         run: |
-          export PATH="$HOME/.local/bin:$PATH"
+          # Detect claude CLI location (works on macOS and Linux)
+          export PATH="$HOME/.local/bin:/usr/local/bin:$PATH"
           python3 tools/execute_pipeline.py pipelines/summarize-context.yaml
 
       - name: Commit results

@@ -1,0 +1,20 @@
+fragment ContextParts on Context {
+  __typename
+  title
+  description
+  body
+}
+
+fragment PipelineParts on Pipeline {
+  __typename
+  name
+  description
+  trigger
+  steps {
+    __typename
+    name
+    type
+    prompt
+    command
+  }
+}
