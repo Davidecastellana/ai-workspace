@@ -1,0 +1,25 @@
+# Routing table — maps folder changes to pipelines
+# When a file changes in a watched path, the linked pipeline fires.
+# Van Clief's concept: each folder is a "room", each pipeline is that room's workflow.
+
+routes:
+  - name: writing
+    watch: context/writing/**
+    pipeline: pipelines/writing.yaml
+    description: Fires when any writing-room content changes
+
+  - name: production
+    watch: context/production/**
+    pipeline: pipelines/production.yaml
+    description: Fires when any production-room content changes
+
+  - name: research
+    watch: context/research/**
+    pipeline: pipelines/research.yaml
+    description: Fires when any research-room content changes
+
+  - name: summarize
+    watch: context/**
+    pipeline: pipelines/summarize-context.yaml
+    description: Fires on ANY context change — produces a summary
+    priority: low   # runs after room-specific pipelines

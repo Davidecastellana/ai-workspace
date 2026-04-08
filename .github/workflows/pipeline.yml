@@ -6,29 +6,30 @@ on:
     paths:
       - "context/**"
       - "pipelines/**"
+      - "routing.yaml"
 
 jobs:
-  execute:
-    runs-on: self-hosted  # works on any OS — macOS dev or Linux prod
+  route-and-execute:
+    runs-on: self-hosted
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          fetch-depth: 2  # need previous commit to diff against
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Python dependencies
         run: pip3 install -r requirements.txt --quiet
 
-      - name: Run pipeline
+      - name: Route and execute pipelines
         run: |
-          # Detect claude CLI location (works on macOS and Linux)
           export PATH="$HOME/.local/bin:/usr/local/bin:$PATH"
-          python3 tools/execute_pipeline.py pipelines/summarize-context.yaml
+          python3 tools/router.py
 
       - name: Commit results
         run: |
           git config user.email "pipeline@local"
           git config user.name "Pipeline Bot"
-          git add summaries/
-          git diff --staged --quiet || (git commit -m "pipeline: update summaries [skip ci]" && git push)
+          git add summaries/ context/ pipelines/
+          git diff --staged --quiet || (git commit -m "pipeline: auto-output [skip ci]" && git push)
