@@ -1,5 +1,5 @@
 name: summarize-context
-description: Read all context files and write a combined summary
+description: Read all context files and write a combined summary222
 trigger: on-push
 steps:
   - name: summarize
